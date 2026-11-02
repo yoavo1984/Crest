@@ -19,6 +19,28 @@ Someone who isn't a vetted contributor can have only one pull request open
 at a time (see "Who can contribute code" in `CONTRIBUTING.md`). Keep their
 work in that one pull request.
 
+## Base44 web preview
+
+- The Linux preview runs the existing product website, including its interactive
+  demonstrations, and the Help Center; it cannot run the native SwiftUI browser.
+  Native builds and `Scripts/bootstrap.sh` require Apple silicon, Xcode and
+  XcodeGen. Do not replace native behavior with a web imitation.
+- Start with `docker compose -f docker-compose.base44.yml up -d`. No external
+  credentials are needed. Port 3000 serves `Website/` directly and proxies
+  `/guides/` and its `/ws` live-reload connection to the source-built Docusaurus
+  dev server on port 3001. The committed
+  `Website/guides/` build is deliberately not used in the preview.
+- Help Center dependencies install from its lockfile at container startup into a
+  named volume; generated Docusaurus files use another volume. File-watch polling
+  supports source edits. Static website edits need a browser refresh, not a build.
+- Sandbox configuration lives only in Compose and `.base44/nginx.conf`; shared
+  app configuration and native build behavior are unchanged. No preview-mode
+  overrides or external credentials are required.
+- Check both Compose services are healthy, open `/` and `/guides/`, exercise a
+  crest selector and guide search, and confirm docs compilation in service logs.
+  Native browser, Keychain, iCloud and engine acceptance checks still require
+  an Apple device and are not covered by this preview.
+
 ## Versioning completed work
 
 - Every committed app-code change advances `MARKETING_VERSION` with

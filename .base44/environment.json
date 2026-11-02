@@ -1,0 +1,7 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [],
+  "description": "Crest's existing interactive product website and source-built Help Center. The SwiftUI browser requires Apple silicon and Xcode and cannot run in the Linux web preview."
+}
